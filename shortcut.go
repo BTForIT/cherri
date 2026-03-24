@@ -247,6 +247,12 @@ type condition struct {
 	arguments []actionArgument
 }
 
+// conditions maps Cherri token types to Shortcuts WFCondition plist codes.
+// IMPORTANT: These codes are NOT sequential. Common mistakes:
+//   - 2 = "is greater than" (NOT contains!)
+//   - 99 = "contains"
+//   - 0 = "is less than" (NOT "is"!)
+//   - 4 = "is" (equals)
 var conditions = map[tokenType]int{
 	Is:             4,
 	Not:            5,
