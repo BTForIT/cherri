@@ -903,6 +903,14 @@ func makeConditionalAction(t *token) {
 				conditionalParameter("WFAnotherNumber", conditionalParams, &thirdArg.valueType, thirdArg.value)
 			}
 			conditionalParams["WFCondition"] = firstCondition.condition
+			// Error on blank conditional strings
+			if firstCondition.condition != 100 && firstCondition.condition != 101 {
+				if _, hasStr := conditionalParams["WFConditionalActionString"]; !hasStr {
+					if _, hasNum := conditionalParams["WFNumberValue"]; !hasNum {
+						parserError("Conditional has no comparison value. Every 'if' that checks contains/is/begins with/ends with must have a value to compare against.")
+					}
+				}
+			}
 			conditionalParams["WFControlFlowMode"] = startStatement
 		} else {
 			var cond = t.value.(WFConditions)
@@ -938,6 +946,18 @@ func makeConditions(wfConditions *WFConditions) map[string]any {
 		if len(condition.arguments) > 2 {
 			var argumentThree = condition.arguments[2]
 			conditionalParameter("WFAnotherNumber", conditionParams, &argumentThree.valueType, argumentThree.value)
+		}
+
+		// Error on blank conditional strings for comparison conditions
+		if condition.condition != 100 && condition.condition != 101 {
+			if str, hasStr := conditionParams["WFConditionalActionString"]; hasStr {
+				// Check for empty string value
+				if str == "" {
+					parserError("Conditional comparison value is empty. Use a non-empty string.")
+				}
+			} else if _, hasNum := conditionParams["WFNumberValue"]; !hasNum {
+				parserError("Conditional has no comparison value. Every 'if' that checks contains/is/begins with/ends with must have a value to compare against.")
+			}
 		}
 
 		filterTemplates = append(filterTemplates, conditionParams)
