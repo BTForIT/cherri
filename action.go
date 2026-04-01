@@ -136,7 +136,7 @@ var enumerations = map[string][]string{
 	"saveToPlaygroundBehavior":      {"always", "askWhenRun", "never"},
 	"focusModes":                    {"Do Not Disturb", "Personal", "Work", "Sleep", "Driving"},
 	"focusUntil":                    {"Turned Off", "Time", "I Leave", "Event Ends"},
-	"filterOperator":                {"is", "is not", "contains", "does not contain", "begins with", "ends with"},
+	"operator":                      {"is", "is not", "contains", "does not contain", "begins with", "ends with"},
 	"filterMode":                    {"any", "all"},
 }
 
