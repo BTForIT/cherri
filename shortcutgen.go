@@ -118,9 +118,10 @@ func makeCommentAction(comment string) {
 }
 
 func makeVariableAction(t *token) {
-	// Error when @variable is used with a string value — creates unnamed text blocks.
+	// Warn when @variable is used with a string value — creates unnamed text blocks.
+	// Suggest using const instead for named output references.
 	if t.valueType == String && t.typeof != Variable {
-		parserError(fmt.Sprintf(
+		parserWarning(fmt.Sprintf(
 			"@%s creates an unnamed text block. Use 'const %s = ...' instead for a named reference.",
 			t.ident, t.ident,
 		))
@@ -832,10 +833,10 @@ func makeOutputName(token *token) string {
 
 	var customOutputName = fmt.Sprintf("%s%s", strings.ToTitle(string(typeOfToken[0])), typeOfToken[1:])
 
-	// Error when an action output gets a generic name like "Text" or "Text 1"
+	// Warn when an action output gets a generic name like "Text" or "Text 1"
 	if customOutputName == "Text" || strings.HasPrefix(customOutputName, "Text ") {
-		parserError(fmt.Sprintf(
-			"Unnamed text block '%s'. Use 'const descriptiveName = ...' instead of '@variable = ...' to create a named reference.",
+		parserWarning(fmt.Sprintf(
+			"Action output named '%s' — use a descriptive const name to avoid unnamed references.",
 			customOutputName,
 		))
 	}
