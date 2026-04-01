@@ -412,22 +412,22 @@ var actions = map[string]*actionDefinition{
 				key:       "WFContentItemInputParameter",
 			},
 			{
-				name:      "filterProperty",
+				name:      "property",
 				validType: String,
-				key:       "filterProperty",
+				key:       "property",
 				optional:  true,
 			},
 			{
-				name:      "filterOperator",
+				name:      "operator",
 				validType: String,
-				key:       "filterOperator",
-				enum:      "filterOperator",
+				key:       "operator",
+				enum:      "operator",
 				optional:  true,
 			},
 			{
-				name:      "filterValues",
+				name:      "values",
 				validType: String,
-				key:       "filterValues",
+				key:       "values",
 				optional:  true,
 				infinite:  true,
 			},
@@ -435,12 +435,10 @@ var actions = map[string]*actionDefinition{
 		make: func(args []actionArgument) map[string]any {
 			var params = make(map[string]any)
 
-			// Input contacts variable
 			if len(args) > 0 && args[0].valueType == Variable {
 				params["WFContentItemInputParameter"] = variableValue(args[0].value.(varValue))
 			}
 
-			// If no filter property specified, return basic params (no predicates)
 			if len(args) < 4 {
 				return params
 			}
@@ -448,7 +446,6 @@ var actions = map[string]*actionDefinition{
 			var property = getArgValue(args[1]).(string)
 			var operator = getArgValue(args[2]).(string)
 
-			// Map operator string to Shortcuts operator code
 			var operatorCode int
 			switch strings.ToLower(operator) {
 			case "is":
@@ -467,7 +464,6 @@ var actions = map[string]*actionDefinition{
 				operatorCode = 99
 			}
 
-			// Build filter templates from remaining args (index 3+)
 			var templates []map[string]any
 			for i := 3; i < len(args); i++ {
 				if args[i].valueType == Nil || args[i].value == nil {
@@ -475,10 +471,8 @@ var actions = map[string]*actionDefinition{
 				}
 				var filterValue any
 				if args[i].valueType == Variable {
-					// Variable reference in filter value
 					filterValue = paramValue(args[i], String)
 				} else {
-					// String value - may contain inline variables like "#{VarName}"
 					filterValue = attachmentValues(args[i].value.(string))
 				}
 
@@ -507,11 +501,9 @@ var actions = map[string]*actionDefinition{
 			return params
 		},
 		decomp: func(action *ShortcutAction) (arguments []string) {
-			// Decompile input
 			if action.WFWorkflowActionParameters["WFContentItemInputParameter"] != nil {
 				arguments = append(arguments, decompValue(action.WFWorkflowActionParameters["WFContentItemInputParameter"]))
 			}
-			// Decompile filter predicates if present
 			if action.WFWorkflowActionParameters["WFContentItemFilter"] != nil {
 				var filter = action.WFWorkflowActionParameters["WFContentItemFilter"].(map[string]interface{})
 				if filterValue, ok := filter["Value"].(map[string]interface{}); ok {

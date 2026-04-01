@@ -28,8 +28,6 @@ enum contactDetail {
 // [Doc]: Get Contacts: Get contacts from input.
 action 'detect.contacts' getContacts(variable input: 'WFInput'): array
 
-// filterContacts is defined in actions_std.go to support filter predicates (WFContentItemFilter)
-
 // [Doc]: Get Detail of Contact: Get a detail about a contact.
 action 'properties.contacts' getContactDetail(variable contact: 'WFInput', contactDetail detail: 'WFContentItemPropertyName')
 
