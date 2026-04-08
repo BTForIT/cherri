@@ -91,6 +91,9 @@ func generateActions() {
 				exit(fmt.Sprintf("Undefined action '%s'", tokenAction.ident))
 			}
 			setCurrentAction(tokenAction.ident, actions[tokenAction.ident])
+			if tokenAction.ident == "rawAction" && len(tokenAction.args) > 0 {
+				currentAction.overrideIdentifier = getArgValue(tokenAction.args[0]).(string)
+			}
 			makeAction(tokenAction.args, &map[string]any{})
 		case Repeat:
 			makeRepeatAction(&t)
