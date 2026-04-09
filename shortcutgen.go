@@ -200,6 +200,9 @@ func makeVariableValue(reference *map[string]any, valueType tokenType, value *an
 		var valuePtr = *value
 		var action = valuePtr.(action)
 		setCurrentAction(action.ident, actions[action.ident])
+		if action.ident == "rawAction" && len(action.args) > 0 {
+			currentAction.overrideIdentifier = getArgValue(action.args[0]).(string)
+		}
 		makeAction(action.args, reference)
 	case Dict:
 		addStdAction("dictionary", attachReferenceToParams(&map[string]any{

@@ -2019,7 +2019,14 @@ func defineRawAction() {
 				return map[string]any{}
 			}
 
-			var params = getArgValue(args[1]).(map[string]interface{})
+			var rawValue = getArgValue(args[1])
+			if rawValue == nil {
+				return map[string]any{}
+			}
+			params, ok := rawValue.(map[string]interface{})
+			if !ok {
+				return map[string]any{}
+			}
 			handleRawParams(params)
 
 			return params
