@@ -98,7 +98,7 @@ var actions = map[string]*actionDefinition{
 				}
 			}
 		},
-		addParams: func(args []actionArgument) (params map[string]any) {
+		appendParams: func(args []actionArgument) (params map[string]any) {
 			if len(args) < 4 {
 				return
 			}
@@ -173,10 +173,8 @@ var actions = map[string]*actionDefinition{
 				optional:     true,
 			},
 		},
-		addParams: func(_ []actionArgument) map[string]any {
-			return map[string]any{
-				"state": 1,
-			}
+		setParams: map[string]any{
+			"state": 1,
 		},
 		defaultAction: true,
 	},
@@ -204,10 +202,8 @@ var actions = map[string]*actionDefinition{
 				optional:     true,
 			},
 		},
-		addParams: func(_ []actionArgument) map[string]any {
-			return map[string]any{
-				"state": 0,
-			}
+		setParams: map[string]any{
+			"state": 0,
 		},
 	},
 	"toggleAlarm": {
@@ -232,10 +228,8 @@ var actions = map[string]*actionDefinition{
 			},
 		},
 		appIntent: toggleAlarmIntent,
-		addParams: func(_ []actionArgument) map[string]any {
-			return map[string]any{
-				"operation": "Toggle",
-			}
+		setParams: map[string]any{
+			"operation": "Toggle",
 		},
 	},
 	"emailAddress": {
@@ -258,7 +252,7 @@ var actions = map[string]*actionDefinition{
 				parserError("Shortcuts only allows one variable for an email address.")
 			}
 		},
-		make: func(args []actionArgument) map[string]any {
+		makeParams: func(args []actionArgument) map[string]any {
 			if args[0].valueType == Variable {
 				return map[string]any{
 					"WFEmailAddress": argumentValue(args, 0),
@@ -292,7 +286,7 @@ var actions = map[string]*actionDefinition{
 				parserError("Shortcuts only allows one variable for a phone number.")
 			}
 		},
-		make: func(args []actionArgument) map[string]any {
+		makeParams: func(args []actionArgument) map[string]any {
 			if args[0].valueType == Variable {
 				return map[string]any{
 					"WFPhoneNumber": argumentValue(args, 0),
@@ -351,7 +345,7 @@ var actions = map[string]*actionDefinition{
 				optional:     true,
 			},
 		},
-		addParams: func(args []actionArgument) (params map[string]any) {
+		appendParams: func(args []actionArgument) (params map[string]any) {
 			params = make(map[string]any)
 			if len(args) >= 3 {
 				if args[2].valueType == Variable {
@@ -392,10 +386,8 @@ var actions = map[string]*actionDefinition{
 				enum:      "contactDetails",
 			},
 		},
-		addParams: func(_ []actionArgument) map[string]any {
-			return map[string]any{
-				"Mode": "Remove",
-			}
+		setParams: map[string]any{
+			"Mode": "Remove",
 		},
 	},
 	"filterContacts": {
@@ -570,7 +562,7 @@ var actions = map[string]*actionDefinition{
 				enum:      "fileLabel",
 			},
 		},
-		addParams: func(args []actionArgument) map[string]any {
+		appendParams: func(args []actionArgument) map[string]any {
 			if len(args) == 0 {
 				return map[string]any{}
 			}
@@ -617,7 +609,7 @@ var actions = map[string]*actionDefinition{
 				optional:  true,
 			},
 		},
-		addParams: func(args []actionArgument) (params map[string]any) {
+		appendParams: func(args []actionArgument) (params map[string]any) {
 			if len(args) == 0 {
 				return map[string]any{}
 			}
@@ -670,7 +662,7 @@ var actions = map[string]*actionDefinition{
 				optional:  true,
 			},
 		},
-		addParams: func(args []actionArgument) map[string]any {
+		appendParams: func(args []actionArgument) map[string]any {
 			if len(args) == 0 {
 				return map[string]any{}
 			}
@@ -777,7 +769,7 @@ var actions = map[string]*actionDefinition{
 				optional:     true,
 			},
 		},
-		addParams: func(args []actionArgument) map[string]any {
+		appendParams: func(args []actionArgument) map[string]any {
 			if len(args) == 0 {
 				return map[string]any{}
 			}
@@ -825,9 +817,9 @@ var actions = map[string]*actionDefinition{
 				defaultValue: "\n",
 			},
 		},
-		addParams:  textParts,
-		decomp:     decompTextParts,
-		outputType: Arr,
+		appendParams: textParts,
+		decomp:       decompTextParts,
+		outputType:   Arr,
 	},
 	"joinText": {
 		doc: selfDoc{
@@ -849,9 +841,9 @@ var actions = map[string]*actionDefinition{
 				defaultValue: "\n",
 			},
 		},
-		addParams:  textParts,
-		decomp:     decompTextParts,
-		outputType: String,
+		appendParams: textParts,
+		decomp:       decompTextParts,
+		outputType:   String,
 	},
 	"url": {
 		doc: selfDoc{
@@ -867,7 +859,7 @@ var actions = map[string]*actionDefinition{
 				infinite:  true,
 			},
 		},
-		make: func(args []actionArgument) map[string]any {
+		makeParams: func(args []actionArgument) map[string]any {
 			var urlItems []any
 			for _, item := range args {
 				urlItems = append(urlItems, paramValue(item, String))
@@ -895,7 +887,7 @@ var actions = map[string]*actionDefinition{
 				infinite:  true,
 			},
 		},
-		make: func(args []actionArgument) map[string]any {
+		makeParams: func(args []actionArgument) map[string]any {
 			var urlItems []any
 			for _, item := range args {
 				urlItems = append(urlItems, paramValue(item, String))
@@ -943,7 +935,7 @@ var actions = map[string]*actionDefinition{
 				defaultValue: true,
 			},
 		},
-		addParams: func(args []actionArgument) map[string]any {
+		appendParams: func(args []actionArgument) map[string]any {
 			if len(args) < 3 {
 				return map[string]any{}
 			}
@@ -975,11 +967,7 @@ var actions = map[string]*actionDefinition{
 		check: func(args []actionArgument, definition *actionDefinition) {
 			replaceAppIDs(args, definition)
 		},
-		addParams: func(args []actionArgument) map[string]any {
-			if len(args) == 0 {
-				return map[string]any{}
-			}
-
+		appendParams: func(args []actionArgument) map[string]any {
 			if args[0].valueType == Variable {
 				return map[string]any{
 					"WFSelectedApp": argumentValue(args, 0),
@@ -1014,7 +1002,7 @@ var actions = map[string]*actionDefinition{
 		check: func(args []actionArgument, definition *actionDefinition) {
 			replaceAppIDs(args, definition)
 		},
-		make: func(args []actionArgument) map[string]any {
+		makeParams: func(args []actionArgument) map[string]any {
 			if args[0].valueType == Variable {
 				return map[string]any{
 					"WFApp": argumentValue(args, 0),
@@ -1047,24 +1035,10 @@ var actions = map[string]*actionDefinition{
 				infinite:  true,
 			},
 		},
-		check: replaceAppIDs,
-		make: func(args []actionArgument) map[string]any {
-			if args[0].valueType != Variable {
-				return map[string]any{
-					"WFApp": argumentValue(args, 0),
-				}
-			}
-
-			return map[string]any{
-				"WFApp": map[string]any{
-					"BundleIdentifier": argumentValue(args, 0),
-				},
-			}
-		},
-		addParams: func(_ []actionArgument) map[string]any {
-			return map[string]any{
-				"WFHideAppMode": "All Apps",
-			}
+		check:      replaceAppIDs,
+		makeParams: makeAllAppsAction,
+		setParams: map[string]any{
+			"WFHideAppMode": "All Apps",
 		},
 		decomp: func(action *ShortcutAction) (arguments []string) {
 			return decompAppAction("WFAppsExcept", action)
@@ -1088,7 +1062,7 @@ var actions = map[string]*actionDefinition{
 		check: func(args []actionArgument, definition *actionDefinition) {
 			replaceAppIDs(args, definition)
 		},
-		make: func(args []actionArgument) map[string]any {
+		makeParams: func(args []actionArgument) map[string]any {
 			if args[0].valueType == Variable {
 				return map[string]any{
 					"WFApp": argumentValue(args, 0),
@@ -1121,21 +1095,10 @@ var actions = map[string]*actionDefinition{
 				infinite:  true,
 			},
 		},
-		check: replaceAppIDs,
-		make: func(args []actionArgument) (params map[string]any) {
-			params = make(map[string]any)
-			if args[0].valueType != Variable {
-				params["WFAppsExcept"] = apps(args)
-			} else {
-				params["WFAppsExcept"] = argumentValue(args, 0)
-			}
-
-			return
-		},
-		addParams: func(_ []actionArgument) map[string]any {
-			return map[string]any{
-				"WFQuitAppMode": "All Apps",
-			}
+		check:      replaceAppIDs,
+		makeParams: makeAllAppsAction,
+		setParams: map[string]any{
+			"WFQuitAppMode": "All Apps",
 		},
 		decomp: func(action *ShortcutAction) (arguments []string) {
 			return decompAppAction("WFAppsExcept", action)
@@ -1159,7 +1122,7 @@ var actions = map[string]*actionDefinition{
 		check: func(args []actionArgument, definition *actionDefinition) {
 			replaceAppIDs(args, definition)
 		},
-		make: func(args []actionArgument) (params map[string]any) {
+		makeParams: func(args []actionArgument) (params map[string]any) {
 			params = make(map[string]any)
 
 			params["WFAskToSaveChanges"] = false
@@ -1197,20 +1160,11 @@ var actions = map[string]*actionDefinition{
 			},
 		},
 		check: replaceAppIDs,
-		make: func(args []actionArgument) (params map[string]any) {
-			params = map[string]any{
-				"WFQuitAppMode":      "All Apps",
-				"WFAskToSaveChanges": false,
-			}
-
-			if args[0].valueType != Variable {
-				params["WFAppsExcept"] = apps(args)
-			} else {
-				params["WFAppsExcept"] = argumentValue(args, 0)
-			}
-
-			return
+		setParams: map[string]any{
+			"WFQuitAppMode":      "All Apps",
+			"WFAskToSaveChanges": false,
 		},
+		makeParams: makeAllAppsAction,
 		decomp: func(action *ShortcutAction) (arguments []string) {
 			return decompAppAction("WFAppsExcept", action)
 		},
@@ -1260,11 +1214,7 @@ var actions = map[string]*actionDefinition{
 				}
 			}
 		},
-		addParams: func(args []actionArgument) map[string]any {
-			if len(args) == 0 {
-				return map[string]any{}
-			}
-
+		appendParams: func(args []actionArgument) map[string]any {
 			var params = make(map[string]any)
 			if args[0].valueType == Variable {
 				params["WFPrimaryAppIdentifier"] = argumentValue(args, 0)
@@ -1316,11 +1266,7 @@ var actions = map[string]*actionDefinition{
 				validType: String,
 			},
 		},
-		addParams: func(args []actionArgument) map[string]any {
-			if len(args) == 0 {
-				return map[string]any{}
-			}
-
+		appendParams: func(args []actionArgument) map[string]any {
 			return map[string]any{
 				"target": map[string]any{
 					"title": argumentValue(args, 0),
@@ -1350,7 +1296,7 @@ var actions = map[string]*actionDefinition{
 				validType: Variable,
 			},
 		},
-		addParams: func(args []actionArgument) map[string]any {
+		appendParams: func(args []actionArgument) map[string]any {
 			if len(args) == 0 {
 				return map[string]any{
 					"isSelf": true,
@@ -1386,7 +1332,7 @@ var actions = map[string]*actionDefinition{
 				infinite:  true,
 			},
 		},
-		make: func(args []actionArgument) map[string]any {
+		makeParams: func(args []actionArgument) map[string]any {
 			var listItems []map[string]any
 			for _, item := range args {
 				listItems = append(listItems, map[string]any{
@@ -1448,7 +1394,7 @@ var actions = map[string]*actionDefinition{
 				optional:  true,
 			},
 		},
-		addParams: func(args []actionArgument) (xCallbackParams map[string]any) {
+		appendParams: func(args []actionArgument) (xCallbackParams map[string]any) {
 			if len(args) == 0 {
 				return
 			}
@@ -1508,7 +1454,7 @@ var actions = map[string]*actionDefinition{
 				optional:  true,
 			},
 		},
-		addParams: func(args []actionArgument) (params map[string]any) {
+		appendParams: func(args []actionArgument) (params map[string]any) {
 			if len(args) == 0 {
 				return map[string]any{}
 			}
@@ -1583,7 +1529,7 @@ var actions = map[string]*actionDefinition{
 				enum: unitType,
 			}, &args[2])
 		},
-		addParams: func(args []actionArgument) map[string]any {
+		appendParams: func(args []actionArgument) map[string]any {
 			if len(args) == 0 {
 				return map[string]any{
 					"isSelf": false,
@@ -1648,7 +1594,7 @@ var actions = map[string]*actionDefinition{
 				enum: unitType,
 			}, &args[2])
 		},
-		addParams: func(args []actionArgument) map[string]any {
+		appendParams: func(args []actionArgument) map[string]any {
 			if len(args) == 0 {
 				return map[string]any{}
 			}
@@ -1701,7 +1647,7 @@ var actions = map[string]*actionDefinition{
 				optional:  true,
 			},
 		},
-		make: func(args []actionArgument) map[string]any {
+		makeParams: func(args []actionArgument) map[string]any {
 			var title = args[0].value.(string)
 			var subtitle = args[1].value.(string)
 			wrapVariableReference(&title)
@@ -1757,7 +1703,7 @@ var actions = map[string]*actionDefinition{
 				parserError(fmt.Sprintf("File '%s' does not exist!", file))
 			}
 		},
-		make: func(args []actionArgument) map[string]any {
+		makeParams: func(args []actionArgument) map[string]any {
 			var file = getArgValue(args[0]).(string)
 			var bytes, readErr = os.ReadFile(file)
 			handle(readErr)
@@ -1797,10 +1743,8 @@ var actions = map[string]*actionDefinition{
 			var contactDetailKey = strings.ReplaceAll(contactDetail, " ", "")
 			currentAction.parameters[2].key = "WFContactContentItem" + contactDetailKey
 		},
-		addParams: func(_ []actionArgument) map[string]any {
-			return map[string]any{
-				"Mode": "Set",
-			}
+		setParams: map[string]any{
+			"Mode": "Set",
 		},
 	},
 	"setFocusMode": {
@@ -1840,7 +1784,7 @@ var actions = map[string]*actionDefinition{
 				optional:  true,
 			},
 		},
-		addParams: func(args []actionArgument) map[string]any {
+		appendParams: func(args []actionArgument) map[string]any {
 			if len(args) > 0 {
 				var mode = getArgValue(args[0]).(string)
 				if fm, found := focusModes[mode]; found {
@@ -1870,7 +1814,7 @@ var actions = map[string]*actionDefinition{
 				optional:     true,
 			},
 		},
-		addParams: func(args []actionArgument) map[string]any {
+		appendParams: func(args []actionArgument) map[string]any {
 			var params = map[string]any{
 				"Operation": "Toggle",
 			}
@@ -1922,7 +1866,7 @@ var actions = map[string]*actionDefinition{
 				optional:     true,
 			},
 		},
-		addParams: func(args []actionArgument) map[string]any {
+		appendParams: func(args []actionArgument) map[string]any {
 			if len(args) < 3 {
 				return map[string]any{}
 			}
@@ -2014,7 +1958,7 @@ func defineRawAction() {
 				validType: Dict,
 			},
 		},
-		make: func(args []actionArgument) map[string]any {
+		makeParams: func(args []actionArgument) map[string]any {
 			if len(args) == 1 {
 				return map[string]any{}
 			}
@@ -2377,6 +2321,22 @@ func replaceAppIDs(args []actionArgument, _ *actionDefinition) {
 	}
 }
 
+func makeAllAppsAction(args []actionArgument) (params map[string]any) {
+	if len(args) == 0 {
+		return map[string]any{}
+	}
+
+	params = make(map[string]any)
+
+	if args[0].valueType != Variable {
+		params["WFAppsExcept"] = apps(args)
+	} else {
+		params["WFAppsExcept"] = argumentValue(args, 0)
+	}
+
+	return
+}
+
 func decompAppAction(key string, action *ShortcutAction) (arguments []string) {
 	if action.WFWorkflowActionParameters[key] != nil {
 		switch reflect.TypeOf(action.WFWorkflowActionParameters[key]).Kind() {
@@ -2432,10 +2392,8 @@ var toggleSetActions = map[string]actionDefinition{
 		},
 		appIdentifier: "com.apple.AccessibilityUtilities.AXSettingsShortcuts",
 		identifier:    "AXToggleBackgroundSoundsIntent",
-		addParams: func(_ []actionArgument) map[string]any {
-			return map[string]any{
-				"setting": "whenMediaIsPlaying",
-			}
+		setParams: map[string]any{
+			"setting": "whenMediaIsPlaying",
 		},
 	},
 	"AutoAnswerCalls": {
@@ -2672,10 +2630,8 @@ func defineToggleSetActions() {
 	for name, def := range toggleSetActions {
 		var docTitle = def.doc.title
 		var toggleName = fmt.Sprintf("toggle%s", name)
-		def.addParams = func(_ []actionArgument) map[string]any {
-			return map[string]any{
-				"operation": "toggle",
-			}
+		def.setParams = map[string]any{
+			"operation": "toggle",
 		}
 		if docTitle != "" {
 			def.doc.title = fmt.Sprintf("Toggle %s", docTitle)
@@ -2693,7 +2649,7 @@ func defineToggleSetActions() {
 
 		var setName = fmt.Sprintf("set%s", name)
 		def.defaultAction = true
-		def.addParams = nil
+		def.setParams = map[string]any{}
 		def.defaultAction = true
 		var setKey = "state"
 		if def.setKey != "" {
