@@ -398,6 +398,34 @@ var actions = map[string]*actionDefinition{
 			}
 		},
 	},
+	"sortContacts": {
+		doc: selfDoc{
+			title:       "Sort Contacts",
+			description: "Sort contacts by a property without applying any filter predicates. Compiles to filter.contacts with sort settings only.",
+			category:    "contacts",
+		},
+		identifier: "filter.contacts",
+		parameters: []parameterDefinition{
+			{
+				name:      "contacts",
+				validType: Variable,
+				key:       "WFContentItemInputParameter",
+			},
+			{
+				name:      "sortBy",
+				validType: String,
+				key:       "WFContentItemSortProperty",
+				optional:  true,
+			},
+			{
+				name:      "orderBy",
+				validType: String,
+				key:       "WFContentItemSortOrder",
+				enum:      "fileOrderings",
+				optional:  true,
+			},
+		},
+	},
 	"filterContacts": {
 		doc: selfDoc{
 			title:       "Filter Contacts",
